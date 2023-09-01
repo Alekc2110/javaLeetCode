@@ -1,5 +1,11 @@
 package com.java.task.practice;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+
 public class Solution {
     public static void main(String[] args) {
         int[] arr = {10, 3, 15, 8, 25, 1, 0, 55, 89, 11, 3, 155, -1, 1050, 3000};
@@ -24,10 +30,74 @@ public class Solution {
 //        int c = stringBuilder.charAt(0);
 //        System.out.println(c);
 
+        Client c1 = new Client();
+        c1.setName("John");
+        c1.setEmail(Optional.of("dsa@gmail.com"));
+
+        Client c2 = new Client();
+        c2.setName("Anna");
+        c2.setEmail(Optional.of("  "));
+
+        Ticket t1 = new Ticket();
+        t1.setDate(LocalDate.now());
+        t1.setPrice(550.00);
+        t1.setDestination("Paris");
+        t1.setClient(c1);
+
+        Ticket t2 = new Ticket();
+        t2.setDate(LocalDate.now().plusDays(10));
+        t2.setPrice(700.00);
+        t2.setDestination("Kiev");
+        t2.setClient(c1);
+
+        Ticket t3 = new Ticket();
+        t3.setDate(LocalDate.now().plusDays(20));
+        t3.setPrice(330.00);
+        t3.setDestination("NewYork");
+        t3.setClient(c2);
+
+        List<Ticket> tickets = List.of(t1, t2, t3);
+
+        printTicketByDate(LocalDate.now(), tickets);
+        System.out.println(checkPresenceOfTicketForClient(c1, tickets));
+        System.out.println(getAveragePrice(tickets).getAsDouble());
+        System.out.println(checkIfAllClientHaveEmail(tickets));
+        returnAllDestinations(tickets).ifPresent(System.out::print);
 
     }
 
-    public static int findUniqueElementInArray(int[] arr){
+    private static void printTicketByDate(LocalDate date, List<Ticket> tickets) {
+        tickets.stream().filter(t -> t.getDate().equals(date)).forEach(System.out::println);
+
+    }
+
+    private static boolean checkPresenceOfTicketForClient(Client c, List<Ticket> tickets) {
+        return tickets.stream().anyMatch(t -> t.getClient().equals(c));
+
+    }
+
+    private static OptionalDouble getAveragePrice(List<Ticket> tickets) {
+        return tickets.stream().mapToDouble(t-> t.getPrice()).average();
+    }
+
+    private static boolean checkIfAllClientHaveEmail(List<Ticket> tickets) {
+        return tickets.stream().allMatch(t-> {
+            Optional<String> email = t.getClient().getEmail();
+            if(email.isPresent()){
+                String str = email.get();
+                return !str.isBlank();
+            }
+            return false;
+        });
+    }
+
+    private static Optional<String> returnAllDestinations(List<Ticket> tickets) {
+//        return tickets.stream().map(Ticket::getDestination).reduce((s1, s2)-> s1 + "," + s2);
+        return Optional.of(tickets.stream().map(Ticket::getDestination).collect(Collectors.joining(",")));
+    }
+
+
+    public static int findUniqueElementInArray(int[] arr) {
         int result = 0;
         for (int j : arr) {
             result ^= j;
@@ -35,7 +105,7 @@ public class Solution {
         return result;
     }
 
-    static <T extends String> void show(T t){
+    static <T extends String> void show(T t) {
         System.out.println(t.isEmpty());
     }
 

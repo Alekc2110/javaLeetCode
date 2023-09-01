@@ -23,8 +23,8 @@ public class Solution {
     public static void main(String[] args) {
 //       int[] arr = {2,2,1,1,1,2,2};
 //       int[] arr = {3,2,3};
-//        int[] arr = {2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4};
-        int[] arr = {-1,100,2,100,100,4,100};
+        int[] arr = {2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 10, 10, 10, 10};
+//        int[] arr = {-1,100,2,100,100,4,100};
         System.out.println(majorityElement(arr));
     }
 
@@ -52,6 +52,8 @@ public class Solution {
 //        return nums[nums.length/2];
 //    }
 
+
+    //TODO refactor wrong calculation on array {2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 10, 10, 10, 10}
     public static int majorityElement(int[] nums) {
         Arrays.sort(nums);
         int element = nums[0];
