@@ -36,27 +36,33 @@ public class Solution {
 
     /**
      * Quick Select Algorithm
+     *
      * @param nums
      * @param k
      * @return int - kth largest value in array
      */
     public static int findKthLargest1(int[] nums, int k) {
-        int start = 0, end = nums.length - 1, index = nums.length - k;
+        int start = 0;
+        int end = nums.length - 1;
+        int index = nums.length - k;
         while (start < end) {
-            int pivot = partition(nums, start, end);
-            if (pivot < index) start = pivot + 1;
-            else if (pivot > index) end = pivot - 1;
-            else return nums[pivot];
+            int pivotIndex = partition(nums, start, end);
+            if (pivotIndex < index) start = pivotIndex + 1;
+            else if (pivotIndex > index) end = pivotIndex - 1;
+            else return nums[pivotIndex];
         }
         return nums[start];
     }
 
     private static int partition(int[] nums, int start, int end) {
-        int pivot = start, temp;
+        int pivot = start;
+        int temp;
         while (start <= end) {
             while (start <= end && nums[start] <= nums[pivot]) start++;
             while (start <= end && nums[end] > nums[pivot]) end--;
+
             if (start > end) break;
+
             temp = nums[start];
             nums[start] = nums[end];
             nums[end] = temp;
@@ -69,12 +75,12 @@ public class Solution {
 
     public static int findKthLargest2(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
-        for(int i : nums){
-            pq.add(i);
+        for (int integer : nums) {
+            pq.add(integer);
         }
 
         System.out.println(pq);
-        while(k > 1){
+        while (k > 1) {
             pq.poll();
             --k;
         }
