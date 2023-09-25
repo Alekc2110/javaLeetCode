@@ -1643,10 +1643,10 @@ public class Solution {
             a = b;
             b = result;
             System.out.print(result + " ");
-            count += 1;
+            count++;
         }
         System.out.println();
-        return a;
+        return b;
     }
 
     public static long countFibonachiNumberWithArray(int fibon) {
@@ -1663,24 +1663,21 @@ public class Solution {
         return array[fibon];
     }
 
-    // not effective for big numbers!
-    public static long countFibonachiNumberRecursive(long fibon) {
-        if (fibon <= 1)
-            return fibon;
-
-
-        return countFibonachiNumberRecursive(fibon - 1) + countFibonachiNumberRecursive(fibon - 2);
-    }
-
     public static int calcSqrt(int input) {
         int low = 0;
         int high = input;
         while (low <= high) {
             int mid = low + (high - low) / 2;
             int squareMid = mid * mid;
-            if (squareMid == input) return mid;
-            if (squareMid > input) high = mid - 1;
-            if (squareMid < input) low = mid + 1;
+            if (squareMid == input) {
+                return mid;
+            }
+            if (squareMid > input) {
+                high = mid - 1;
+            }
+            if (squareMid < input){
+                low = mid + 1;
+            }
         }
         return low - 1;
     }
