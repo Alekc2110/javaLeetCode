@@ -378,19 +378,19 @@ public class Solution {
 //        _2stUser.move();
 //        anotherUser.move();
 //-----------------------------------------------------------
- String in = "ivanov;";
- String in1 = "ivanov;Ivan Ivanov;";
- String in2 = "ivanov;Ivan Ivanov;ivanov@mail.com";
- String in3 = "Login;Name;Email\n" +
-         "ivanov;Ivan Ivanov;ivanov@mail.com\n" +
-         "петров;Петр Петров;petrov@google.com\n" +
-         "obama;Barack Obama;obama@google.com\n" +
-         "bush;Джордж Буш;bush@mail.com";
+// String in = "ivanov;";
+// String in1 = "ivanov;Ivan Ivanov;";
+// String in2 = "ivanov;Ivan Ivanov;ivanov@mail.com";
+// String in3 = "Login;Name;Email\n" +
+//         "ivanov;Ivan Ivanov;ivanov@mail.com\n" +
+//         "петров;Петр Петров;petrov@google.com\n" +
+//         "obama;Barack Obama;obama@google.com\n" +
+//         "bush;Джордж Буш;bush@mail.com";
 
 //     convert1(in);
 //     convert1(in1);
 //     convert1(in2);
-     convert1(in3);
+//     convert1(in3);
 //        String str = "I, s, I, I,mr, mr, I, I";
 //        String pat = "\\b(([a-zA-Z[а-яА-ЯёЁ]]+[,]*)+)(?:[\\W]+\\1\\b)+";
 //        String res = str.replaceAll(pat, "$1");
