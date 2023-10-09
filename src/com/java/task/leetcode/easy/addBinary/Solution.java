@@ -37,26 +37,26 @@ public class Solution {
     }
 
     public static String addBinary1(String a, String b) {
-        StringBuilder rb = new StringBuilder();
-        int c = 0;
-        int i = a.length() - 1;
-        int j = b.length() - 1;
-        while (i >= 0 || j >= 0 || c == 1) {
-            if (i >= 0){
-                c += a.charAt(i) - '0';
-                i--;
+        int prefix = 0;
+        StringBuilder builder = new StringBuilder();
+        int index1 = a.length() - 1;
+        int index2 = b.length() - 1;
+
+        while (index1 >= 0 || index2 >= 0 || prefix == 1) {
+            if (index1 >= 0) {
+                prefix += a.charAt(index1) - '0';
+                index1--;
             }
 
-            if (j >= 0){
-                c += b.charAt(j) - '0';
-                j--;
+            if (index2 >= 0) {
+                prefix += b.charAt(index2) - '0';
+                index2--;
             }
-
-            rb.append(c % 2);
-            c = c / 2;
-
+            builder.append(prefix % 2);
+            prefix = prefix/2;
         }
-        return rb.reverse().toString();
+
+        return builder.reverse().toString();
     }
 
     public static String addBinary2(String a, String b) {
