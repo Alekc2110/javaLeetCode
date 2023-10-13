@@ -4,21 +4,35 @@ import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
-        LRUCache lruCache = new LRUCache(2);
+        LRUCache lruCache = new LRUCache(3);
         LRUCache2Var lruCache2Var = new LRUCache2Var(2);
-        LRUCacheCopy lruCacheCopy = new LRUCacheCopy(2);
+//        LRUCacheCopy lruCacheCopy = new LRUCacheCopy(2);
 
 //      Output
 //      [null, null, null, 1, null, -1, null, -1, 3, 4]
-        lruCacheCopy.put(1, 1);
-        lruCacheCopy.put(2, 2);
-        System.out.println(lruCacheCopy.get(1));
-        lruCacheCopy.put(3, 3);
-        System.out.println(lruCacheCopy.get(2));
-        lruCacheCopy.put(4, 4);
-        System.out.println(lruCacheCopy.get(1));
-        System.out.println(lruCacheCopy.get(3));
-        System.out.println(lruCacheCopy.get(4));
+        lruCache.put(1, 1);
+        lruCache.put(2, 2);
+        System.out.println(lruCache.get(1));
+        System.out.println(lruCache.printAllCache());
+        System.out.println();
+
+        lruCache.put(3, 3);
+        System.out.println(lruCache.get(2));
+        System.out.println("after manipulate with 2");
+        System.out.println(lruCache.printAllCache());
+        lruCache.put(4, 4);
+        System.out.println(lruCache.get(1));
+        System.out.println("after manipulate with 1");
+        System.out.println(lruCache.printAllCache());
+        System.out.println(lruCache.get(3));
+        System.out.println("after manipulate with 3");
+        System.out.println(lruCache.printAllCache());
+        System.out.println(lruCache.get(4));
+        System.out.println("after manipulate with 4");
+        System.out.println(lruCache.printAllCache());
+
+        lruCache.put(5, 5);
+        System.out.println(lruCache.printAllCache());
     }
 }
 
@@ -51,6 +65,10 @@ class LRUCache extends LinkedHashMap<Integer, Integer> {
     protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
        return super.size() > capacity;
     }
+
+    public String printAllCache(){
+        return super.toString();
+    }
 }
 /**
  * Your LRUCache object will be instantiated and called as such:
@@ -63,18 +81,18 @@ class LRUCache extends LinkedHashMap<Integer, Integer> {
  */
 
 class LRUCache2Var {
-    private Map<Integer, ListNode> cache;
-    private ListNode head;
-    private ListNode tail;
-    private int capacity;
+    private final Map<Integer, ListNode> cache;
+    private final ListNode dummyHead;
+    private final ListNode dummyTail;
+    private final int capacity;
 
     public LRUCache2Var(int capacity) {
         this.capacity = capacity;
         cache = new HashMap<>();
-        head = new ListNode(0, 0);
-        tail = new ListNode(0, 0);
-        head.next = tail;
-        tail.prev = head;
+        dummyHead = new ListNode(0, 0);
+        dummyTail = new ListNode(0, 0);
+        dummyHead.next = dummyTail;
+        dummyTail.prev = dummyHead;
     }
 
     public int get(int key) {
@@ -93,8 +111,8 @@ class LRUCache2Var {
             moveToTail(node);
         } else {
             if (cache.size() == capacity) {
-                cache.remove(head.next.key);
-                removeNode(head.next);
+                cache.remove(dummyHead.next.key);
+                removeNode(dummyHead.next);
             }
             node = new ListNode(key, value);
             cache.put(key, node);
@@ -108,11 +126,11 @@ class LRUCache2Var {
     }
 
     private void addToTail(ListNode node) {
-        ListNode prev = tail.prev;
+        ListNode prev = dummyTail.prev;
         node.prev = prev;
-        tail.prev.next = node;
-        tail.prev = node;
-        node.next = tail;
+        dummyTail.prev.next = node;
+        dummyTail.prev = node;
+        node.next = dummyTail;
     }
 
     private void removeNode(ListNode node) {
