@@ -1,6 +1,12 @@
 package com.java.task.practice;
 
+import lombok.SneakyThrows;
+import org.w3c.dom.ls.LSOutput;
+
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -8,9 +14,9 @@ import java.util.stream.Collectors;
 
 public class Solution {
     public static void main(String[] args) {
-        int[] arr = {10, 3, 15, 8, 25, 1, 0, 55, 89, 11, 3, 155, -1, 1050, 3000};
+//        int[] arr = {10, 3, 15, 8, 25, 1, 0, 55, 89, 11, 3, 155, -1, 1050, 3000};
 //        int[] arr1 = {1, 5, 8, 10, 15, 18, 19, 25, 35};
-        int[] arr1 = {1, 1, 8, 10, 8, 10, 55, 35, 25, 35, 25};
+//        int[] arr1 = {1, 1, 8, 10, 8, 10, 55, 35, 25, 35, 25};
 //        System.out.println(findUniqueElementInArray(arr1));
 //        reversOrderArray(arr1);
 
@@ -30,44 +36,100 @@ public class Solution {
 //        int c = stringBuilder.charAt(0);
 //        System.out.println(c);
 
-        Client c1 = new Client();
-        c1.setName("John");
-        c1.setEmail(Optional.of("dsa@gmail.com"));
+//        Client c1 = new Client();
+//        c1.setName("John");
+//        c1.setEmail(Optional.of("dsa@gmail.com"));
+//
+//        Client c2 = new Client();
+//        c2.setName("Anna");
+//        c2.setEmail(Optional.of("  "));
+//
+//        Ticket t1 = new Ticket();
+//        t1.setDate(LocalDate.now());
+//        t1.setPrice(550.00);
+//        t1.setDestination("Paris");
+//        t1.setClient(c1);
+//
+//        Ticket t2 = new Ticket();
+//        t2.setDate(LocalDate.now().plusDays(10));
+//        t2.setPrice(700.00);
+//        t2.setDestination("Kiev");
+//        t2.setClient(c1);
+//
+//        Ticket t3 = new Ticket();
+//        t3.setDate(LocalDate.now().plusDays(20));
+//        t3.setPrice(330.00);
+//        t3.setDestination("NewYork");
+//        t3.setClient(c2);
+//
+//        List<Ticket> tickets = List.of(t1, t2, t3);
+//
+//        printTicketByDate(LocalDate.now(), tickets);
+//        System.out.println(checkPresenceOfTicketForClient(c1, tickets));
+//        System.out.println(getAveragePrice(tickets).getAsDouble());
+//        System.out.println(checkIfAllClientHaveEmail(tickets));
+//        returnAllDestinations(tickets).ifPresent(System.out::print);
 
-        Client c2 = new Client();
-        c2.setName("Anna");
-        c2.setEmail(Optional.of("  "));
+        Ticket ticket = Ticket.builder().price(55.00).departure("Kiev")
+                .date(LocalDate.now().minusDays(10))
+                .client(Client.builder().address("Sobornosti, 4").build()).build();
+        System.out.println(convertObjectToJson(ticket));
 
-        Ticket t1 = new Ticket();
-        t1.setDate(LocalDate.now());
-        t1.setPrice(550.00);
-        t1.setDestination("Paris");
-        t1.setClient(c1);
 
-        Ticket t2 = new Ticket();
-        t2.setDate(LocalDate.now().plusDays(10));
-        t2.setPrice(700.00);
-        t2.setDestination("Kiev");
-        t2.setClient(c1);
 
-        Ticket t3 = new Ticket();
-        t3.setDate(LocalDate.now().plusDays(20));
-        t3.setPrice(330.00);
-        t3.setDestination("NewYork");
-        t3.setClient(c2);
 
-        List<Ticket> tickets = List.of(t1, t2, t3);
+    }
 
-        printTicketByDate(LocalDate.now(), tickets);
-        System.out.println(checkPresenceOfTicketForClient(c1, tickets));
-        System.out.println(getAveragePrice(tickets).getAsDouble());
-        System.out.println(checkIfAllClientHaveEmail(tickets));
-        returnAllDestinations(tickets).ifPresent(System.out::print);
+    @SneakyThrows
+    public static String convertObjectToJson(Object obj)  {
+        StringBuilder builder = new StringBuilder();
+        jsonCreationFunction(builder, obj, 1);
+        return builder.toString();
+
+    }
+
+    private static void jsonCreationFunction(StringBuilder builder, Object obj, int tabCount) throws IllegalAccessException {
+        builder.append("{\n");
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            Object fieldValue = field.get(obj);
+            builder.append("\t".repeat(tabCount))
+                    .append(fieldName).append(": ");
+
+            if(fieldValue != null){
+                if(fieldValue instanceof Number){
+                    builder.append(fieldValue).append("\n");
+
+                } else if (fieldValue instanceof String) {
+                    builder.append("\"").append(fieldValue).append("\"");
+                }
+
+                else if (fieldValue instanceof LocalDate date) {
+                    builder.append("\"").append(date).append("\"");
+                }
+                else{
+                    jsonCreationFunction(builder, fieldValue, tabCount + 1);
+                }
+            } else {
+                builder.append("\"").append("\"");
+            }
+
+            if(i < fields.length - 1){
+                builder.append(",");
+            }
+            builder.append("\n");
+
+        }
+        builder.append("\t".repeat(tabCount - 1)).append("}");
 
     }
 
     private static void printTicketByDate(LocalDate date, List<Ticket> tickets) {
-        tickets.stream().filter(t -> t.getDate().equals(date)).forEach(System.out::println);
+//        tickets.stream().filter(t -> t.getDate().equals(date)).forEach(System.out::println);
 
     }
 
@@ -82,11 +144,11 @@ public class Solution {
 
     private static boolean checkIfAllClientHaveEmail(List<Ticket> tickets) {
         return tickets.stream().allMatch(t-> {
-            Optional<String> email = t.getClient().getEmail();
-            if(email.isPresent()){
-                String str = email.get();
-                return !str.isBlank();
-            }
+//            Optional<String> email = t.getClient().getEmail();
+//            if(email.isPresent()){
+//                String str = email.get();
+//                return !str.isBlank();
+//            }
             return false;
         });
     }

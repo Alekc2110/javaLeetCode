@@ -1,8 +1,11 @@
 package com.java.task.practice;
 
+import lombok.Builder;
+
 import java.util.Objects;
 import java.util.Optional;
 
+@Builder
 public class Client {
 
     private String name;

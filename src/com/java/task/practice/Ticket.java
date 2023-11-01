@@ -1,7 +1,9 @@
 package com.java.task.practice;
 
-import java.time.LocalDate;
+import lombok.Builder;
 
+import java.time.LocalDate;
+@Builder
 public class Ticket {
 
     private String departure;
