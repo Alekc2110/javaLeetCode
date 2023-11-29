@@ -32,7 +32,6 @@ class Solution {
 
     public static int lengthOfLongestSubstring2var(String s) {
         int maxLength = 0;
-
         for (int leftBorder = 0, rightBoarder = 0; rightBoarder < s.length(); rightBoarder++) {
             char currentChar = s.charAt(rightBoarder);
             int indexOf1StAppearanceInSubString = s.indexOf(currentChar, leftBorder);
@@ -48,13 +47,13 @@ class Solution {
         int maxLength = 0;
         Map<Character, Integer> map = new HashMap<>();
 
-        for (int leftBoarder = 0, rightBoarder = 0; rightBoarder < s.length(); rightBoarder++) {
+        for (int currentStartSubString = 0, rightBoarder = 0; rightBoarder < s.length(); rightBoarder++) {
             char currentChar = s.charAt(rightBoarder);
             if (map.containsKey(currentChar) &&
-                    map.get(currentChar) >= leftBoarder) {
-               leftBoarder = map.get(currentChar) + 1;
+                    map.get(currentChar) >= currentStartSubString) {
+                currentStartSubString = map.get(currentChar) + 1;
             }
-            maxLength = Math.max(maxLength, rightBoarder - leftBoarder + 1);
+            maxLength = Math.max(maxLength, rightBoarder - currentStartSubString + 1);
             map.put(currentChar, rightBoarder);
         }
         return maxLength;
