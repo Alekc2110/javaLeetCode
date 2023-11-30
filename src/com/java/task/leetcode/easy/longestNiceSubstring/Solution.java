@@ -31,9 +31,12 @@ import java.util.Set;
  */
 public class Solution {
     public static void main(String[] args) {
-        String s = "YazaAay";
+//        String s = "YazaAay";
+        String s = "cccaAaBbbbzsz";
+//        String s = "YBb";
+//        String s = "c";
 
-        System.out.println(longestNiceSubstring3(s));
+        System.out.println(longestNiceSubstring2(s));
 
     }
 
@@ -70,7 +73,8 @@ public class Solution {
 
     public static String longestNiceSubstring2(String s) {
         Set<Character> set = new HashSet<>();
-        for (char c : s.toCharArray()) {
+        char[] chars = s.toCharArray();
+        for (char c : chars) {
             set.add(c);
         }
 
