@@ -1,21 +1,38 @@
 package com.java.task.practice;
 
-import lombok.SneakyThrows;
-import org.w3c.dom.ls.LSOutput;
-
-import java.lang.reflect.Field;
+import java.lang.constant.ClassDesc;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Solution {
+    static class TreeNode {
+        int val;
+        TreeNode right;
+        TreeNode left;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.right = right;
+            this.left = left;
+        }
+    }
+
+
     public static void main(String[] args) {
-//        int[] arr = {10, 3, 15, 8, 25, 1, 0, 55, 89, 11, 3, 155, -1, 1050, 3000};
-//        int[] arr1 = {1, 5, 8, 10, 15, 18, 19, 25, 35};
+        int[] arr = {10, 3, 15, 8, 25, 1, 0, 55, 89, 11, 3, 155, -1, 1050, 3000};
+//        int[] arr = {1, 5, 8, 10, 15, 18, 19, 25, 35};
 //        int[] arr1 = {1, 1, 8, 10, 8, 10, 55, 35, 25, 35, 25};
 //        System.out.println(findUniqueElementInArray(arr1));
 //        reversOrderArray(arr1);
@@ -63,73 +80,250 @@ public class Solution {
 //        t3.setClient(c2);
 //
 //        List<Ticket> tickets = List.of(t1, t2, t3);
+
+//        System.out.println(reverseAllWordsInSentence2("Is there anybody going to listen to my story."));
+//        System.out.println(reverseSentence("Is there anybody going to listen to my story"));
+//        System.out.println(reverseSentence2("a good   example"));
+
+        // Пример кодирования строки в Base64
+//        String originalString = "Hello, Base64!";
+//        byte[] encode = Base64.getEncoder().encode(originalString.getBytes());
+//        System.out.println("Encoded String: " + Arrays.toString(encode));
+
+        // Пример декодирования строки из Base64
+//        byte[] decodedBytes = Base64.getDecoder().decode(encode);
+//        String decodedString = new String(decodedBytes);
+//        System.out.println("Decoded String: " + decodedString);
+
+//        String[] str = convert(String.class, List.of("Val1", "Val2", "Val3"));
+//        System.out.println(Arrays.asList(str));
+//        int[] arr = new int[]{1, 2, 3, 3, 10, 3, 1, 15, 1, 5, 11, 50, 80, 11};
+//        int[] arr = new int[]{100};
+//        System.out.println(majorityElement(arr));
+
+//        String input = "a-beautiful_rose";
+//        String input1 = "a-beautiful_ros-e";
+//        String input2 = "a-beautiful_rose_";
+//        System.out.println(toCamelCase2(input));
+
+//        Client one = Client.builder().name("One").address("One -address").build();
+//        Client one1 = Client.builder().name("One").address("One -address").build();
+//        Client two = Client.builder().name("Two").address("Two -address").build();
+//        Client three = Client.builder().name("Three").address("Three -address").build();
 //
-//        printTicketByDate(LocalDate.now(), tickets);
-//        System.out.println(checkPresenceOfTicketForClient(c1, tickets));
-//        System.out.println(getAveragePrice(tickets).getAsDouble());
-//        System.out.println(checkIfAllClientHaveEmail(tickets));
-//        returnAllDestinations(tickets).ifPresent(System.out::print);
+//        HashMap<Client, String> map = new HashMap<>(Map.of(one, "ONE", two, "TWO"));
+//
+//        System.out.println(map);
+//
+//        System.out.println(map.get(one1));
+////        System.out.println(map.get(two));
+//
+//        map.put(three, "THREE");
+//
+//        System.out.println(map.get(three));
+//
+//        System.out.println(map.entrySet());
 
-        Ticket ticket = Ticket.builder().price(55.00).departure("Kiev")
-                .date(LocalDate.now().minusDays(10))
-                .client(Client.builder().address("Sobornosti, 4").build()).build();
-        System.out.println(convertObjectToJson(ticket));
-
-
+//        int[] arr = {1, 6, 6, 7, 8, 10, -255, -1, -10, 25, -500};
+//         String[]arr = {"aaa", "bbbb", "ehdhdh"};
+//        System.out.println(findMin(arr));
 
 
     }
 
-    @SneakyThrows
-    public static String convertObjectToJson(Object obj)  {
+    public static <T extends Comparable<T>> T findMin(T[] arr) {
+        T min = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (min.compareTo(arr[i]) > 0)
+                min = arr[i];
+        }
+        return min;
+    }
+
+    public static <T> T findMin(T[] arr, Comparator<T> comparator) {
+        T min = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (comparator.compare(min, arr[i]) > 0)
+                min = arr[i];
+        }
+        return min;
+    }
+
+
+    public static String toCamelCase(String string) {
         StringBuilder builder = new StringBuilder();
-        jsonCreationFunction(builder, obj, 1);
-        return builder.toString();
 
-    }
-
-    private static void jsonCreationFunction(StringBuilder builder, Object obj, int tabCount) throws IllegalAccessException {
-        builder.append("{\n");
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            Object fieldValue = field.get(obj);
-            builder.append("\t".repeat(tabCount))
-                    .append(fieldName).append(": ");
-
-            if(fieldValue != null){
-                if(fieldValue instanceof Number){
-                    builder.append(fieldValue).append("\n");
-
-                } else if (fieldValue instanceof String) {
-                    builder.append("\"").append(fieldValue).append("\"");
-                }
-
-                else if (fieldValue instanceof LocalDate date) {
-                    builder.append("\"").append(date).append("\"");
-                }
-                else{
-                    jsonCreationFunction(builder, fieldValue, tabCount + 1);
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == '-' || string.charAt(i) == '_') {
+                if (i == string.length() - 1) {
+                    break;
+                } else {
+                    builder.append(Character.toUpperCase(string.charAt(i + 1)));
+                    i++;
                 }
             } else {
-                builder.append("\"").append("\"");
+                builder.append(string.charAt(i));
             }
-
-            if(i < fields.length - 1){
-                builder.append(",");
-            }
-            builder.append("\n");
 
         }
-        builder.append("\t".repeat(tabCount - 1)).append("}");
+        return builder.toString();
+    }
+
+    public static String toCamelCase2(String string) {
+        String[] split = string.split("[-_]");
+
+        return Arrays.stream(split, 1, split.length)
+                .map(str -> str.replace(str.charAt(0), Character.toUpperCase(str.charAt(0))))
+                .reduce(split[0], String::concat);
+    }
+
+
+    public static int majorityElement(final int[] A) {
+        Arrays.sort(A);
+        return A[A.length / 2];
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] convert(Class<T> clazz, List<T> values) {
+
+
+        T[] ts = (T[]) Array.newInstance(clazz, values.size());
+        for (int i = 0; i < values.size(); i++) {
+            ts[i] = values.get(i);
+        }
+        return ts;
+    }
+
+
+    public static String reverseSentence(String s) {
+        StringBuilder builder = new StringBuilder();
+        String[] strings = s.trim().split("\s+");
+        for (int i = strings.length - 1; i >= 0; i--) {
+
+            builder.append(strings[i]).append(" ");
+        }
+        return builder.toString();
+    }
+
+    public static String reverseSentence2(String s) {
+
+        String[] s1 = s.split(" +");
+        ArrayList<String> strings = new ArrayList<>(List.of(s1));
+        Collections.reverse(strings);
+
+
+        Collector<String, StringBuilder, StringBuilder> coll = Collector.of(
+                StringBuilder::new,
+                (st, str) -> st.append(str).append(" "),
+                StringBuilder::append
+        );
+        return strings.stream().collect(coll).toString();
+
+    }
+
+    public static String reverseSentence3(String s) {
+        StringBuilder builder = new StringBuilder();
+        String[] s1 = s.split(" +");
+        Stream.of(s1).collect(Collectors.toCollection(LinkedList::new))
+                .descendingIterator()
+                .forEachRemaining(str -> builder.append(str).append(" "));
+        return builder.toString();
+    }
+
+    public static String reverseAllWordsInSentence(String sentence) {
+        StringBuilder revBuilder = new StringBuilder();
+        StringBuilder resBuilder = new StringBuilder();
+        char[] chars = sentence.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            while (i < chars.length && !Character.isSpaceChar(chars[i])) {
+                revBuilder.append(chars[i]);
+                i++;
+            }
+            revBuilder.reverse();
+            resBuilder.append(revBuilder).append(" ");
+            revBuilder = new StringBuilder();
+        }
+        return resBuilder.toString();
+    }
+
+    public static String reverseAllWordsInSentence2(String sentence) {
+        StringBuilder resBuilder = new StringBuilder();
+        int wordStart = 0;
+        int wordEnd = 0;
+        char[] chars = sentence.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (!Character.isSpaceChar(chars[i])) {
+                wordStart = i;
+                while (i < chars.length && !Character.isSpaceChar(chars[i])) {
+                    i++;
+                }
+                wordEnd = i - 1;
+            }
+            while (wordStart <= wordEnd) {
+                resBuilder.append(chars[wordEnd]);
+                wordEnd--;
+            }
+            resBuilder.append(" ");
+
+        }
+        return resBuilder.toString();
+    }
+
+
+    public static int findElementInSortedList(List<Integer> list, Integer el) {
+        if (el == null) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) == null) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        return findElementInSortedList(list, 0, list.size() - 1, el);
+    }
+
+    private static int findElementInSortedList(List<Integer> list, int start, int end, Integer el) {
+
+
+        while (start <= end) {
+
+            int medIndex = start + (end - start) / 2;
+
+            if (Objects.equals(list.get(medIndex), el)) {
+                return medIndex;
+            }
+
+            if (el < list.get(medIndex)) {
+                return findElementInSortedList(list, start, medIndex - 1, el);
+            }
+
+            if (el > list.get(medIndex)) {
+                return findElementInSortedList(list, medIndex + 1, end, el);
+            }
+
+        }
+
+        return -1;
+    }
+
+    public static void inorderTraversal(TreeNode current) {
+
+        if (current != null) {
+
+            inorderTraversal(current.left);
+
+            System.out.print(current.val + ";");
+
+            inorderTraversal(current.right);
+
+        }
 
     }
 
     private static void printTicketByDate(LocalDate date, List<Ticket> tickets) {
-//        tickets.stream().filter(t -> t.getDate().equals(date)).forEach(System.out::println);
+        tickets.stream().filter(t -> t.getDate().equals(date)).forEach(System.out::println);
 
     }
 
@@ -139,16 +333,16 @@ public class Solution {
     }
 
     private static OptionalDouble getAveragePrice(List<Ticket> tickets) {
-        return tickets.stream().mapToDouble(t-> t.getPrice()).average();
+        return tickets.stream().mapToDouble(t -> t.getPrice()).average();
     }
 
     private static boolean checkIfAllClientHaveEmail(List<Ticket> tickets) {
-        return tickets.stream().allMatch(t-> {
-//            Optional<String> email = t.getClient().getEmail();
-//            if(email.isPresent()){
-//                String str = email.get();
-//                return !str.isBlank();
-//            }
+        return tickets.stream().allMatch(t -> {
+            Optional<String> email = t.getClient().getEmail();
+            if (email.isPresent()) {
+                String str = email.get();
+                return !str.isBlank();
+            }
             return false;
         });
     }
@@ -208,53 +402,6 @@ public class Solution {
         }
 //        System.out.println("countOutLoop " + countOutLoop);
 //        System.out.println("countInnerLoop " + countInnerLoop);
-    }
-
-    static void quickSort(int[] arr) {
-        quickSort(arr, 0, arr.length - 1);
-
-    }
-
-    private static void quickSort(int[] arr, int leftIndex, int rightIndex) {
-        if (leftIndex >= rightIndex) {
-            return;
-        }
-        int pivot = arr[rightIndex];
-
-//        int pivotIndex = new Random().nextInt(rightIndex-leftIndex) + leftIndex;
-//        swap(arr, pivotIndex,rightIndex);
-//        int pivot = arr[rightIndex];
-
-        int leftPointer = partitionArray(arr, pivot, leftIndex, rightIndex);
-
-        quickSort(arr, leftIndex, leftPointer - 1);
-        quickSort(arr, leftPointer + 1, rightIndex);
-
-
-    }
-
-    private static int partitionArray(int[] arr, int pivot, int lowIndex, int highIndex) {
-        int leftPointer = lowIndex;
-        int rightPointer = highIndex;
-
-        while (leftPointer < rightPointer) {
-            while (arr[leftPointer] <= pivot && leftPointer < rightPointer) {
-                leftPointer++;
-            }
-            while (arr[rightPointer] >= pivot && leftPointer < rightPointer) {
-                rightPointer--;
-            }
-            swap(arr, leftPointer, rightPointer);
-        }
-        swap(arr, leftPointer, highIndex);
-
-        return leftPointer;
-    }
-
-    private static void swap(int[] arr, int index, int index2) {
-        int temp = arr[index];
-        arr[index] = arr[index2];
-        arr[index2] = temp;
     }
 
     public static void mergeSortArray(int[] arr) {
@@ -320,5 +467,11 @@ public class Solution {
         if (j < rightArrLength) {
             System.arraycopy(rightArr, j, arr, k, rightArrLength - j);
         }
+    }
+
+    private static void swap(int[] arr, int index, int index2) {
+        int temp = arr[index];
+        arr[index] = arr[index2];
+        arr[index2] = temp;
     }
 }

@@ -7,18 +7,20 @@ package com.java.task.task01.task0101;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
+import java.util.function.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 public class Solution {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException {
 //        AnotherUser anotherUser = new AnotherUser();
 //        anotherUser.run();
 //
@@ -755,21 +757,19 @@ public class Solution {
 //        List<Map.Entry<String, String>> entries = new ArrayList<>(map.entrySet().stream().map(Map.Entry::copyOf).toList());
 //        entries.clear();
 //        map.forEach((k,v)-> System.out.println(k + ":" + v));
-        System.out.println(countFibonachiNumber(5));
 
     }
 
-    public static void reversOrderArray(int[] arr){
-        for( int i = 0; i < arr.length/2; i++ )
-        {
+    public static void reversOrderArray(int[] arr) {
+        for (int i = 0; i < arr.length / 2; i++) {
             int temp = arr[i];
             arr[i] = arr[arr.length - 1 - i];
             arr[arr.length - 1 - i] = temp;
         }
     }
 
-    public static void printList(List<? extends Parent> list){
-        for (var obj: list) {
+    public static void printList(List<? extends Parent> list) {
+        for (var obj : list) {
             System.out.println(obj);
         }
     }
@@ -783,7 +783,7 @@ public class Solution {
         System.arraycopy(arr2, 0, result, arr1.length, arr2.length);
 
         //Arrays.sort(result);
-        quickSortArr(result, 0, result.length - 1);
+        quickSortUsingHighIndexElementAsPivot(result, 0, result.length - 1);
 
         return result;
     }
@@ -912,101 +912,7 @@ public class Solution {
         }
     }
 
-    /**
-     * Implementation of quickSort with 2 variants:
-     * 1st - peek pivot as element of higher index in array
-     * 2nd - peek middle element as pivot
-     *
-     * @param array - array of integers
-     */
-    public static void quickSort(int[] array) {
-        quickSortArr(array, 0, array.length - 1);
-    }
 
-    private static void quickSortArr(int[] arr, int lowIndex, int highIndex) {
-        //check if arr has 1 element, then we don`t need to sort it anymore
-        if (lowIndex >= highIndex) {
-            return;
-        }
-// ------------------------------------------------------------------------------------
-//        // peek the element for pivot for 1var partition method ***
-        int pivIndex = new Random().nextInt(highIndex-lowIndex) + lowIndex;
-        int piv = arr[pivIndex];
-//        // when we peek random el for pivot, then we swap it with last el in array - arr[highIndex]
-        swap(arr, pivIndex, highIndex);
-// ------------------------------------------------------------------------------------
-        // peek the middle!!! element for pivot for 2var partition method ***
-//        int piv = arr[lowIndex + (highIndex - lowIndex) / 2];
-// ------------------------------------------------------------------------------------
-
-        // do arr partition for higher and lower elements around pivot element
-        int leftPointer = arrPartition(arr, lowIndex, highIndex, piv); // 1 var
-//        int leftPointer = arrPartition2Var(arr, lowIndex, highIndex, piv); // 2 var
-
-        // recursive sort left part of arr that is lower than piv element
-        quickSortArr(arr, lowIndex, leftPointer - 1);
-
-//        // recursive sort right part of arr that is higher than piv element
-        quickSortArr(arr, leftPointer + 1 , highIndex);
-
-//        // recursive sort right part of arr that is higher than piv element for partition var2!******
-//        quickSortArr(arr, leftPointer, highIndex);
-    }
-
-
-    private static int arrPartition(int[] arr, int lowIndex, int highIndex, int piv) {
-        int leftPointer = lowIndex;
-        int rightPointer = highIndex;
-
-        //move leftPointer to right and rightPointer to left until they meet each other
-        while (leftPointer < rightPointer) {
-
-            //1st loop: when moving to right, then compare el - arr[leftPointer] with
-            // el piv until we find el > piv, then stop this loop
-            while (arr[leftPointer] <= piv && leftPointer < rightPointer) {
-                leftPointer++;
-            }
-            //2nd loop: when moving to left, then compare el - arr[rightPointer] with
-            // el piv until we find el < piv, then stop this loop
-            while (arr[rightPointer] >= piv && leftPointer < rightPointer) {
-                rightPointer--;
-            }
-            //swap elements - from 1st loop with 2nd loop
-            swap(arr, leftPointer, rightPointer);
-        }
-        // last swap piv element with the last left element from while loop arr[leftPointer]
-        swap(arr, leftPointer, highIndex);
-
-        return leftPointer;
-    }
-
-    private static int arrPartition2Var(int[] arr, int lowIndex, int highIndex, int piv) {
-        int leftPointer = lowIndex;
-        int rightPointer = highIndex;
-
-        //move leftPointer to right and rightPointer to left until they meet each other
-        while (leftPointer <= rightPointer) {
-
-            //1st loop: when moving to right, then compare el - arr[leftPointer] with
-            // el piv until we find el > piv, then stop this loop
-            while (arr[leftPointer] < piv) {
-                leftPointer++;
-            }
-            //2nd loop: when moving to left, then compare el - arr[rightPointer] with
-            // el piv until we find el < piv, then stop this loop
-            while (arr[rightPointer] > piv) {
-                rightPointer--;
-            }
-            //swap elements - from 1st loop with 2nd loop
-            if (leftPointer <= rightPointer) {
-                swap(arr, leftPointer, rightPointer);
-                leftPointer++;
-                rightPointer--;
-            }
-        }
-
-        return leftPointer;
-    }
 
     public static int romanToInt(String s) {
         int num = 0;
@@ -1532,47 +1438,7 @@ public class Solution {
     }
 
 
-    public static void quickSortBasicApproach(int[] array, int low, int high) {
-        int i = low, j = high;
-        if (array.length == 0)
-            return;//завершить выполнение, если длина массива равна 0
 
-        if (low >= high)
-            return;//завершить выполнение если уже нечего делить
-
-        // выбрать опорный элемент
-        int middle = low + (high - low) / 2;
-        int middleElement = array[middle];
-
-        // разделить на подмассивы, который больше и меньше опорного элемента
-        while (i <= j) {
-            while (array[i] < middleElement) {
-                i++;
-            }
-
-            while (array[j] > middleElement) {
-                j--;
-            }
-
-            if (i <= j) {//меняем местами
-                int temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
-                i++;
-                j--;
-            }
-        }
-
-        // вызов рекурсии для сортировки левой и правой части
-        if (low < j) {
-            quickSortBasicApproach(array, low, j);
-            // printArray(array);
-        }
-        if (high > i) {
-            quickSortBasicApproach(array, i, high);
-            //  printArray(array);
-        }
-    }
 
     public static int[] sort(int[] array) {
         int count = 0;
@@ -1675,7 +1541,7 @@ public class Solution {
             if (squareMid > input) {
                 high = mid - 1;
             }
-            if (squareMid < input){
+            if (squareMid < input) {
                 low = mid + 1;
             }
         }
