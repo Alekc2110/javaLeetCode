@@ -28,6 +28,15 @@ public class Solution {
     }
 
     public static int searchInsert(int[] nums, int target) {
+        for (int n = 0; n < nums.length; n++) {
+            if (nums[n] == target || nums[n] > target) {
+                return n;
+            }
+        }
+        return nums.length;
+    }
+
+    public static int searchInsert2(int[] nums, int target) {
         return divideArr(nums, 0, nums.length, target);
     }
 
