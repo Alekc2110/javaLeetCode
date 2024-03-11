@@ -26,7 +26,7 @@ public class Solution {
 
         int[] nums = {3,2,3,1,2,4,5,5,6};
         int k = 4;
-        System.out.println(findKthLargest1(nums, k));
+        System.out.println(findKthLargest2(nums, k));
     }
 
     public static int findKthLargest(int[] nums, int k) {

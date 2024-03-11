@@ -37,14 +37,14 @@ public class Solution {
 //        ListNode l2 = new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9))));
 
         //7,0,8
-        ListNode l1 = new ListNode(2, new ListNode(4, new ListNode(3)));
-        ListNode l2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+//        ListNode l1 = new ListNode(2, new ListNode(4, new ListNode(3)));
+//        ListNode l2 = new ListNode(5, new ListNode(6, new ListNode(4)));
 
-        //1,9,9,9,9,9,9,9,9,9
-//        ListNode l1 = new ListNode(9);
-//        ListNode l2 = new ListNode(1, new ListNode(9, new ListNode(9, new ListNode(9,
-//                                          new ListNode(9, new ListNode(9, new ListNode(9,
-//                                                  new ListNode(9, new ListNode(9, new ListNode(9))))))))));
+
+        ListNode l1 = new ListNode(9);
+        ListNode l2 = new ListNode(1, new ListNode(9, new ListNode(9, new ListNode(9,
+                                          new ListNode(9, new ListNode(9, new ListNode(9,
+                                                  new ListNode(9, new ListNode(9, new ListNode(9))))))))));
 
         ListNode listNode = addTwoNumbers2(l1, l2);
         System.out.print("[");

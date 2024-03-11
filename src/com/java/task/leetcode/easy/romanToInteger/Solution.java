@@ -48,6 +48,46 @@ public class Solution {
         System.out.println(romanToInt2("MCMXCIV"));
     }
 
+    /**
+     * Solution in Ascending order of s.toCharArray()
+     * @param s String input
+     * @return int result
+     */
+    public static int romanToInt1(String s) {
+        Map<Character, Integer> map = new HashMap<>(Map.of(
+                'I', 1,
+                'V', 5,
+                'X', 10,
+                'L', 50,
+                'C', 100,
+                'D', 500,
+                'M', 1000
+        ));
+        int result = 0;
+
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char cur = chars[i];
+            int number =  map.get(cur);
+            if(i < chars.length - 1 && number < map.get(chars[i+1])){
+                int diff =  map.get(chars[i+1]) - map.get(cur);
+                result += diff;
+                i++;
+            }
+            else {
+                result += number;
+            }
+
+        }
+
+        return result;
+    }
+
+    /**
+     * Solution in Descending order of s.toCharArray()
+     * @param s String input
+     * @return int result
+     */
     public static int romanToInt(String s) {
         Map<Character, Integer> map = new HashMap<>();
         map.put('I', 1);
