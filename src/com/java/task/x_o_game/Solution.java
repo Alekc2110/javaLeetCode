@@ -46,7 +46,9 @@ public class Solution {
                System.out.println("введенные координаты неправильны, повторите ввод: ");
                continue;
            }
-           GameStatus gameStatusAfterPlayerMove = makePlayerMove(board, coordinates);
+            GameStatus gameStatusAfterPlayerMove = makePlayerMove(board, coordinates);
+            System.out.println("Игрок сделал ход");
+            prettyPrintBoard(board);
             GameStatus gameStatusAfterPlayerRound = checkGameStatusAfterRound(gameStatusAfterPlayerMove, board);
 
             if(gameStatusAfterPlayerRound.equals(GameStatus.END_GAME)){
@@ -106,8 +108,6 @@ public class Solution {
     public static GameStatus makePlayerMove(String[][] board, int[] coordinates){
         if(checkAvailablePlaceToMove(coordinates, board)){
             board[coordinates[0]][coordinates[1]] = X_MOVE;
-            System.out.println("Игрок сделал ход:");
-            prettyPrintBoard(board);
            return checkRowsStatus(board);
         } else {
             return GameStatus.COORDINATE_OCCUPIED;
@@ -137,23 +137,23 @@ public class Solution {
         int diagonalRightXSum = 0;
         int diagonalRightOSum = 0;
 
-        for (int row = 0, diagonal = 0; row < board.length; row++, diagonal++) {
+        for (int row = 0; row < board.length; row++) {
             int resRowX = 0;
             int resRawO = 0;
             //проверка диагонали лево:верх - право:низ на XXХ
-            if(Objects.equals(board[row][diagonal], X_MOVE)){
+            if(Objects.equals(board[row][row], X_MOVE)){
                 diagonalLeftXSum = diagonalLeftXSum + 1;
             }
             //проверка диагонали лево:верх - право:низ на OOO
-            if(Objects.equals(board[row][diagonal], O_MOVE)){
+            if(Objects.equals(board[row][row], O_MOVE)){
                 diagonalLeftOSum = diagonalLeftOSum - 1;
             }
             //проверка диагонали право:верх - лево:низ на XXХ
-            if(Objects.equals(board[row][2-diagonal], X_MOVE)){
+            if(Objects.equals(board[row][2 - row], X_MOVE)){
                 diagonalRightXSum = diagonalRightXSum + 1;
             }
             //проверка диагонали право:верх - лево:низ на OOO
-            if(Objects.equals(board[row][2-diagonal], O_MOVE)){
+            if(Objects.equals(board[row][2 - row], O_MOVE)){
                 diagonalRightOSum = diagonalRightOSum - 1;
             }
             //проверка левой колонки борды на ХXX
@@ -165,15 +165,15 @@ public class Solution {
                 firstColumnOSum = firstColumnOSum - 1;
             }
             //проверка правой колонки борды на ХXX
-            if(Objects.equals(board[row][board.length-1], X_MOVE)){
+            if(Objects.equals(board[row][board.length - 1], X_MOVE)){
                 lastColumnXSum = lastColumnXSum + 1;
             }
             //проверка правой колонки борды на OOO
-            if(Objects.equals(board[row][board.length-1], O_MOVE)){
+            if(Objects.equals(board[row][board.length - 1], O_MOVE)){
                 lastColumnOSum = lastColumnOSum - 1;
             }
             //проверка средней колонки борды на ХXX
-            if(Objects.equals(board[row][board.length-2], X_MOVE)){
+            if(Objects.equals(board[row][board.length - 2], X_MOVE)){
                 mediumColumnXSum = mediumColumnXSum + 1;
             }
             //проверка средней колонки борды на OOO
@@ -181,28 +181,28 @@ public class Solution {
                 mediumColumnOSum = mediumColumnOSum - 1;
             }
 
-            for (int col = 0; col < board.length; col++) {
-                //проверка ряда борды на ХXX
-                if(Objects.equals(board[row][col], X_MOVE)){
-                   resRowX = resRowX + 1;
-                }
-                //проверка ряда борды на OOO
-                if(Objects.equals(board[row][col], O_MOVE)){
-                    resRawO = resRawO - 1;
-                }
+                    for (int col = 0; col < board.length; col++) {
+                        //проверка ряда борды на ХXX
+                        if(Objects.equals(board[row][col], X_MOVE)){
+                           resRowX = resRowX + 1;
+                        }
+                        //проверка ряда борды на OOO
+                        if(Objects.equals(board[row][col], O_MOVE)){
+                            resRawO = resRawO - 1;
+                        }
+                    }
+                    if(resRowX == X_WIN_SUM){
+                       return GameStatus.X_WIN;
+                    }
+                    if(resRawO == O_WIN_SUM){
+                        return GameStatus.O_WIN;
+                    }
+        }
+            if (firstColumnXSum == X_WIN_SUM || lastColumnXSum == X_WIN_SUM || mediumColumnXSum == X_WIN_SUM || diagonalLeftXSum == X_WIN_SUM || diagonalRightXSum == X_WIN_SUM){
+                return GameStatus.X_WIN;
             }
-            if(resRowX == 3){
-               return GameStatus.X_WIN;
-            }
-            if(resRawO == -3){
+            if (firstColumnOSum == O_WIN_SUM || lastColumnOSum == O_WIN_SUM || mediumColumnOSum == O_WIN_SUM || diagonalLeftOSum == O_WIN_SUM || diagonalRightOSum == O_WIN_SUM){
                 return GameStatus.O_WIN;
-            }
-        }
-        if (firstColumnXSum == X_WIN_SUM || lastColumnXSum == X_WIN_SUM || mediumColumnXSum == X_WIN_SUM || diagonalLeftXSum == X_WIN_SUM || diagonalRightXSum == X_WIN_SUM){
-            return GameStatus.X_WIN;
-        }
-        if (firstColumnOSum == O_WIN_SUM || lastColumnOSum == O_WIN_SUM || mediumColumnOSum == O_WIN_SUM || diagonalLeftOSum == O_WIN_SUM || diagonalRightOSum == O_WIN_SUM){
-            return GameStatus.O_WIN;
         }
         return checkMoveAvailability(board);
     }
