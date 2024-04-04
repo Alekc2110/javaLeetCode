@@ -41,7 +41,8 @@ public class Solution {
                    .map(String::trim)
                    .map(Integer::parseInt)
                    .mapToInt(Integer::intValue).toArray();
-           if(coordinates.length != 2){
+           if(coordinates.length != 2 || coordinates[0] < 0 || coordinates[0] > ROW_NUMBER
+                                                            || coordinates[1] < 0 || coordinates[1] > COL_NUMBER) {
                System.out.println("введенные координаты неправильны, повторите ввод: ");
                continue;
            }
