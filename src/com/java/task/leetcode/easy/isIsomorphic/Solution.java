@@ -26,7 +26,7 @@ public class Solution {
 //        String s = "egg", t = "add"; //true
 //        String s = "foo", t = "bar"; //false
 //        String s = "paper", t = "title"; //true
-        String s = "badc", t = "baba"; //true
+        String s = "badc", t = "baba"; //false
 
         System.out.println(isIsomorphic(s, t));
     }
