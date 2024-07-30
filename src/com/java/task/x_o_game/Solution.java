@@ -1,9 +1,6 @@
 package com.java.task.x_o_game;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Game, known as "крестики нолики"
